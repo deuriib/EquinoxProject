@@ -2,13 +2,10 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace Equinox.Application.ViewModels
+namespace Equinox.Application.DTOs
 {
-    public class CustomerViewModel
+    public class UpdateCustomerDto
     {
-        [Key]
-        public Guid Id { get; set; }
-
         [Required(ErrorMessage = "The Name is Required")]
         [MinLength(2)]
         [MaxLength(100)]

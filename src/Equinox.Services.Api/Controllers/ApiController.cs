@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using FluentValidation.Results;
+﻿using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Equinox.Services.Api.Controllers
 {
@@ -11,7 +11,7 @@ namespace Equinox.Services.Api.Controllers
     {
         private readonly ICollection<string> _errors = new List<string>();
 
-        protected ActionResult CustomResponse(object result = null)
+        protected new ActionResult Response(object result = null)
         {
             if (IsOperationValid())
             {
@@ -24,7 +24,7 @@ namespace Equinox.Services.Api.Controllers
             }));
         }
 
-        protected ActionResult CustomResponse(ModelStateDictionary modelState)
+        protected new ActionResult Response(ModelStateDictionary modelState)
         {
             var errors = modelState.Values.SelectMany(e => e.Errors);
             foreach (var error in errors)
@@ -32,17 +32,17 @@ namespace Equinox.Services.Api.Controllers
                 AddError(error.ErrorMessage);
             }
 
-            return CustomResponse();
+            return Response();
         }
 
-        protected ActionResult CustomResponse(ValidationResult validationResult)
+        protected new ActionResult Response(ValidationResult validationResult)
         {
             foreach (var error in validationResult.Errors)
             {
                 AddError(error.ErrorMessage);
             }
 
-            return CustomResponse();
+            return Response();
         }
 
         protected bool IsOperationValid()

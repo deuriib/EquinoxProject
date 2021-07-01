@@ -1,11 +1,11 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using NetDevPack.Identity.Jwt;
 using NetDevPack.Identity.Model;
+using System.Threading.Tasks;
 
-namespace Equinox.Services.Api.Controllers
+namespace Equinox.Services.Api.Controllers.v1
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -29,7 +29,7 @@ namespace Equinox.Services.Api.Controllers
         [Route("register")]
         public async Task<ActionResult> Register(RegisterUser registerUser)
         {
-            if (!ModelState.IsValid) return CustomResponse(ModelState);
+            if (!ModelState.IsValid) return Response(ModelState);
 
             var user = new IdentityUser
             {
@@ -42,7 +42,7 @@ namespace Equinox.Services.Api.Controllers
 
             if (result.Succeeded)
             {
-                return CustomResponse(GetFullJwt(user.Email));
+                return Response(GetFullJwt(user.Email));
             }
 
             foreach (var error in result.Errors)
@@ -50,31 +50,31 @@ namespace Equinox.Services.Api.Controllers
                 AddError(error.Description);
             }
 
-            return CustomResponse();
+            return Response();
         }
 
         [HttpPost]
         [Route("login")]
         public async Task<IActionResult> Login(LoginUser loginUser)
         {
-            if (!ModelState.IsValid) return CustomResponse(ModelState);
+            if (!ModelState.IsValid) return Response(ModelState);
 
             var result = await _signInManager.PasswordSignInAsync(loginUser.Email, loginUser.Password, false, true);
 
             if (result.Succeeded)
             {
                 var fullJwt = GetFullJwt(loginUser.Email);
-                return CustomResponse(fullJwt);
+                return Response(fullJwt);
             }
 
             if (result.IsLockedOut)
             {
                 AddError("This user is temporarily blocked");
-                return CustomResponse();
+                return Response();
             }
 
             AddError("Incorrect user or password");
-            return CustomResponse();
+            return Response();
         }
 
         private string GetFullJwt(string email)

@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using AutoMapper;
-using Equinox.Application.EventSourcedNormalizers;
+﻿using AutoMapper;
+using Equinox.Application.DTOs;
 using Equinox.Application.Interfaces;
-using Equinox.Application.ViewModels;
 using Equinox.Domain.Commands;
 using Equinox.Domain.Interfaces;
-using Equinox.Infra.Data.Repository.EventSourcing;
 using FluentValidation.Results;
 using NetDevPack.Mediator;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Equinox.Application.Services
 {
@@ -17,52 +15,31 @@ namespace Equinox.Application.Services
     {
         private readonly IMapper _mapper;
         private readonly ICustomerRepository _customerRepository;
-        private readonly IEventStoreRepository _eventStoreRepository;
         private readonly IMediatorHandler _mediator;
 
         public CustomerAppService(IMapper mapper,
                                   ICustomerRepository customerRepository,
-                                  IMediatorHandler mediator,
-                                  IEventStoreRepository eventStoreRepository)
+                                  IMediatorHandler mediator)
         {
             _mapper = mapper;
             _customerRepository = customerRepository;
             _mediator = mediator;
-            _eventStoreRepository = eventStoreRepository;
         }
 
-        public async Task<IEnumerable<CustomerViewModel>> GetAll()
-        {
-            return _mapper.Map<IEnumerable<CustomerViewModel>>(await _customerRepository.GetAll());
-        }
+        public async Task<IEnumerable<CustomerListDto>> GetAll()
+            => _mapper.Map<IEnumerable<CustomerListDto>>(await _customerRepository.GetAll());
 
-        public async Task<CustomerViewModel> GetById(Guid id)
-        {
-            return _mapper.Map<CustomerViewModel>(await _customerRepository.GetById(id));
-        }
+        public async Task<CustomerDetailDto> GetById(Guid id)
+            => _mapper.Map<CustomerDetailDto>(await _customerRepository.GetById(id));
 
-        public async Task<ValidationResult> Register(CustomerViewModel customerViewModel)
-        {
-            var registerCommand = _mapper.Map<RegisterNewCustomerCommand>(customerViewModel);
-            return await _mediator.SendCommand(registerCommand);
-        }
+        public async Task<ValidationResult> Create(CreateCustomerDto dto)
+            => await _mediator.SendCommand(new RegisterNewCustomerCommand(dto.Name, dto.Email, dto.BirthDate));
 
-        public async Task<ValidationResult> Update(CustomerViewModel customerViewModel)
-        {
-            var updateCommand = _mapper.Map<UpdateCustomerCommand>(customerViewModel);
-            return await _mediator.SendCommand(updateCommand);
-        }
+        public async Task<ValidationResult> Update(Guid id, UpdateCustomerDto dto)
+            => await _mediator.SendCommand(new UpdateCustomerCommand(id, dto.Name, dto.Email, dto.BirthDate));
 
-        public async Task<ValidationResult> Remove(Guid id)
-        {
-            var removeCommand = new RemoveCustomerCommand(id);
-            return await _mediator.SendCommand(removeCommand);
-        }
-
-        public async Task<IList<CustomerHistoryData>> GetAllHistory(Guid id)
-        {
-            return CustomerHistory.ToJavaScriptCustomerHistory(await _eventStoreRepository.All(id));
-        }
+        public async Task<ValidationResult> Delete(Guid id)
+            => await _mediator.SendCommand(new RemoveCustomerCommand(id));
 
         public void Dispose()
         {

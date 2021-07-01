@@ -1,11 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Equinox.Domain.Interfaces;
+﻿using Equinox.Domain.Interfaces;
 using Equinox.Domain.Models;
 using Equinox.Infra.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using NetDevPack.Data;
+using NetDevPack.Specification;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Equinox.Infra.Data.Repository
 {
@@ -39,7 +40,7 @@ namespace Equinox.Infra.Data.Repository
 
         public void Add(Customer customer)
         {
-           DbSet.Add(customer);
+            DbSet.Add(customer);
         }
 
         public void Update(Customer customer)
@@ -55,6 +56,11 @@ namespace Equinox.Infra.Data.Repository
         public void Dispose()
         {
             Db.Dispose();
+        }
+
+        public async Task<Customer> GetBySpecification(Specification<Customer> spec)
+        {
+            return await DbSet.AsNoTracking().SingleOrDefaultAsync(spec.ToExpression());
         }
     }
 }

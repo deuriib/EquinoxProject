@@ -1,34 +1,49 @@
-﻿namespace Equinox.Domain.Core.Models
+﻿using System.Collections.Generic;
+using System.Linq;
+
+namespace Equinox.Domain.Core.Models
 {
-    public abstract class ValueObject<T> where T : ValueObject<T>
+    public abstract class ValueObject
     {
+        protected abstract IEnumerable<object> GetEqualityComponents();
+
         public override bool Equals(object obj)
         {
-            var valueObject = obj as T;
-            return EqualsCore(valueObject);
-        }
+            if (obj == null)
+                return false;
 
-        protected abstract bool EqualsCore(T other);
+            if (GetType() != obj.GetType())
+                return false;
+
+            var valueObject = (ValueObject)obj;
+
+            return GetEqualityComponents().SequenceEqual(valueObject.GetEqualityComponents());
+        }
 
         public override int GetHashCode()
         {
-            return GetHashCodeCore();
+            return GetEqualityComponents()
+                .Aggregate(1, (current, obj) =>
+                {
+                    unchecked
+                    {
+                        return current * 23 + (obj?.GetHashCode() ?? 0);
+                    }
+                });
         }
 
-        protected abstract int GetHashCodeCore();
-
-        public static bool operator ==(ValueObject<T> a, ValueObject<T> b)
+        public static bool operator ==(ValueObject a, ValueObject b)
         {
-            if (a is null && b is null)
+            if (ReferenceEquals(a, null) && ReferenceEquals(b, null))
                 return true;
 
-            if (a is null || b is null)
+            if (ReferenceEquals(a, null) || ReferenceEquals(b, null))
                 return false;
 
             return a.Equals(b);
         }
 
-        public static bool operator !=(ValueObject<T> a, ValueObject<T> b)
+        public static bool operator !=(ValueObject a, ValueObject b)
         {
             return !(a == b);
         }

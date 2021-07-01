@@ -1,5 +1,5 @@
-﻿using System;
-using NetDevPack.Domain;
+﻿using NetDevPack.Domain;
+using System;
 
 namespace Equinox.Domain.Models
 {
@@ -16,10 +16,10 @@ namespace Equinox.Domain.Models
         // Empty constructor for EF
         protected Customer() { }
 
-        public string Name { get; private set; }
+        public string Name { get; }
 
-        public string Email { get; private set; }
+        public string Email { get; }
 
-        public DateTime BirthDate { get; private set; }
+        public DateTime BirthDate { get; }
     }
 }

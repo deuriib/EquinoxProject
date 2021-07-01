@@ -3,6 +3,7 @@ using Equinox.Services.Api.Configurations;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -17,7 +18,7 @@ namespace Equinox.Services.Api
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", true, true)
+                .AddJsonFile("appsettings.json", false, true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true);
 
             if (env.IsDevelopment())
@@ -34,7 +35,14 @@ namespace Equinox.Services.Api
         public void ConfigureServices(IServiceCollection services)
         {
             // WebAPI Config
-            services.AddControllers();
+            services.AddControllers()
+                .AddNewtonsoftJson(opt =>
+                {
+                    opt.UseCamelCasing(true);
+                });
+
+            // WebAPI Versioning Config
+            services.AddApiVersioningConfig();
 
             // Setting DBContexts
             services.AddDatabaseConfiguration(Configuration);
@@ -58,8 +66,8 @@ namespace Equinox.Services.Api
             // .NET Native DI Abstraction
             services.AddDependencyInjectionConfiguration();
         }
-    
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IApiVersionDescriptionProvider provider)
         {
             if (env.IsDevelopment())
             {
@@ -85,7 +93,7 @@ namespace Equinox.Services.Api
                 endpoints.MapControllers();
             });
 
-            app.UseSwaggerSetup();
+            app.UseSwaggerSetup(provider);
         }
     }
 }

@@ -1,12 +1,12 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using Equinox.Domain.Events;
+﻿using Equinox.Domain.Events;
 using Equinox.Domain.Interfaces;
 using Equinox.Domain.Models;
 using FluentValidation.Results;
 using MediatR;
 using NetDevPack.Messaging;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Equinox.Domain.Commands
 {
@@ -30,7 +30,7 @@ namespace Equinox.Domain.Commands
 
             if (await _customerRepository.GetByEmail(customer.Email) != null)
             {
-                AddError("The customer e-mail has already been taken.");
+                AddCustomerEmailTakenError();
                 return ValidationResult;
             }
 
@@ -52,7 +52,7 @@ namespace Equinox.Domain.Commands
             {
                 if (!existingCustomer.Equals(customer))
                 {
-                    AddError("The customer e-mail has already been taken.");
+                    AddCustomerEmailTakenError();
                     return ValidationResult;
                 }
             }
@@ -86,6 +86,11 @@ namespace Equinox.Domain.Commands
         public void Dispose()
         {
             _customerRepository.Dispose();
+        }
+
+        private void AddCustomerEmailTakenError()
+        {
+            AddError("The customer e-mail has already been taken.");
         }
     }
 }

@@ -1,8 +1,9 @@
-﻿using System;
+﻿using Equinox.Domain.Models;
+using NetDevPack.Data;
+using NetDevPack.Specification;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Equinox.Domain.Models;
-using NetDevPack.Data;
 
 namespace Equinox.Domain.Interfaces
 {
@@ -10,6 +11,7 @@ namespace Equinox.Domain.Interfaces
     {
         Task<Customer> GetById(Guid id);
         Task<Customer> GetByEmail(string email);
+        Task<Customer> GetBySpecification(Specification<Customer> spec);
         Task<IEnumerable<Customer>> GetAll();
 
         void Add(Customer customer);

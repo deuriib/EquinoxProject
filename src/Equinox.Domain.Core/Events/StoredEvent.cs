@@ -1,5 +1,5 @@
-﻿using System;
-using NetDevPack.Messaging;
+﻿using NetDevPack.Messaging;
+using System;
 
 namespace Equinox.Domain.Core.Events
 {
@@ -17,10 +17,10 @@ namespace Equinox.Domain.Core.Events
         // EF Constructor
         protected StoredEvent() { }
 
-        public Guid Id { get; private set; }
+        public Guid Id { get; }
 
-        public string Data { get; private set; }
+        public string Data { get; }
 
-        public string User { get; private set; }
+        public string User { get; }
     }
 }

@@ -102,7 +102,7 @@ namespace Equinox.UI.Web.Controllers
         [HttpPost("customer-management/remove-customer/{id:guid}"), ActionName("Delete")]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            if (ResponseHasErrors(await _customerAppService.Remove(id)))
+            if (ResponseHasErrors(await _customerAppService.Delete(id)))
                 return View(await _customerAppService.GetById(id));
 
             ViewBag.Sucesso = "Customer Removed!";

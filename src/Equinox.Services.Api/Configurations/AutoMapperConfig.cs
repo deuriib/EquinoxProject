@@ -1,16 +1,19 @@
-﻿using System;
-using Equinox.Application.AutoMapper;
+﻿using Equinox.Application.AutoMapper;
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Reflection;
 
 namespace Equinox.Services.Api.Configurations
 {
     public static class AutoMapperConfig
     {
-        public static void AddAutoMapperConfiguration(this IServiceCollection services)
+        public static IServiceCollection AddAutoMapperConfiguration(this IServiceCollection services)
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
 
-            services.AddAutoMapper(typeof(DomainToViewModelMappingProfile), typeof(ViewModelToDomainMappingProfile));
+            services.AddAutoMapper(Assembly.GetAssembly(typeof(CustomerMappingProfile)));
+
+            return services;
         }
     }
 }
