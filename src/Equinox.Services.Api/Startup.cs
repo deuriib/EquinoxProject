@@ -62,6 +62,9 @@ namespace Equinox.Services.Api
 
             // Adding MediatR for Domain Events and Notifications
             services.AddMediatR(typeof(Startup));
+            
+            // Adding Hangfire for background jobs
+            services.AddHangfireConfig();
 
             // .NET Native DI Abstraction
             services.AddDependencyInjectionConfiguration();
@@ -87,7 +90,10 @@ namespace Equinox.Services.Api
 
             // NetDevPack.Identity dependency
             app.UseAuthConfiguration();
-
+            
+            // Hangfire Dashboard configuration
+            app.UseHangfireConfig();
+            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

@@ -31,6 +31,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Equinox.Infra.CrossCutting.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Equinox.Infra.CrossCutting.IoC", "src\Equinox.Infra.CrossCutting.IoC\Equinox.Infra.CrossCutting.IoC.csproj", "{B3000AD2-5EAA-49A2-8FC4-10DF329B15B0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Equinox.HangFire.MediatR", "src\Equinox.HangFire.MediatR\Equinox.HangFire.MediatR.csproj", "{EB0B1B1D-84AF-478A-B6DA-C425BDAEC385}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,10 @@ Global
 		{B3000AD2-5EAA-49A2-8FC4-10DF329B15B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B3000AD2-5EAA-49A2-8FC4-10DF329B15B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B3000AD2-5EAA-49A2-8FC4-10DF329B15B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB0B1B1D-84AF-478A-B6DA-C425BDAEC385}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB0B1B1D-84AF-478A-B6DA-C425BDAEC385}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB0B1B1D-84AF-478A-B6DA-C425BDAEC385}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB0B1B1D-84AF-478A-B6DA-C425BDAEC385}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -84,6 +90,7 @@ Global
 		{91F0D76D-2BEA-43D2-B123-DC29F2E87792} = {DF6C4BDE-F3C5-4E53-A5D5-9D27B2D3E38F}
 		{788030D0-561B-4136-96B4-D5ABFB5CFD07} = {DF6C4BDE-F3C5-4E53-A5D5-9D27B2D3E38F}
 		{B3000AD2-5EAA-49A2-8FC4-10DF329B15B0} = {DF6C4BDE-F3C5-4E53-A5D5-9D27B2D3E38F}
+		{EB0B1B1D-84AF-478A-B6DA-C425BDAEC385} = {FD1B5301-2A07-47B3-8773-839429800B2F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4050E145-6791-440A-A2E5-75B05ACD4AFE}

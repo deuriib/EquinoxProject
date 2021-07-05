@@ -5,6 +5,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\..\Equinox.HangFire.MediatR\Equinox.HangFire.MediatR.csproj" />
 		<ProjectReference Include="..\Equinox.Domain\Equinox.Domain.csproj" />
 		<ProjectReference Include="..\Equinox.Infra.Data\Equinox.Infra.Data.csproj" />
 	</ItemGroup>
